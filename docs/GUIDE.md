@@ -61,7 +61,7 @@ cp Dawnshard-reader/AGENTS.md ./AGENTS.md
 echo ".snippet-reader/" >> .gitignore
 ```
 
-`AGENTS.md` 讓Dawnshard Reader 閱讀模式在這份專案裡持續生效：同一段對話會一直用這些技能，直到你說「結束Dawnshard Reader」。裝好後重開 Codex。
+`AGENTS.md` 讓Dawnshard Reader 閱讀模式在這份專案裡持續生效：同一段對話會一直用這些技能，直到你說「結束 Dawnshard Reader」。裝好後重開 Codex。
 
 `AGENTS.md` keeps reading mode on for that project: the same conversation keeps using these skills until you say "exit reading mode". Restart Codex after installing.
 
@@ -89,7 +89,7 @@ Step 2. Type `$dawnshard-reader`.
 
 ## 步驟 2：第一次執行 / Step 2: First run
 
-1. 輸入 `$dawnshard-reader`（說「Dawnshard Reader」也會進入）。代理用一行說明Dawnshard Reader 閱讀模式已開啟，以及離開方式：「結束Dawnshard Reader」／"exit reading mode"。同一段對話之後都算Dawnshard Reader 閱讀模式，新對話要再輸入一次。
+1. 輸入 `$dawnshard-reader`（說「Dawnshard Reader」也會進入）。代理用一行說明Dawnshard Reader 閱讀模式已開啟，以及離開方式：「結束 Dawnshard Reader」／"exit reading mode"。同一段對話之後都算Dawnshard Reader 閱讀模式，新對話要再輸入一次。
 2. 還沒有 `settings.json` 時，代理一次只問一件事：
    - 切片長度：預設約 1 分鐘，或 30 秒、3 分鐘、自訂。
    - 來源：細節在步驟 3。可以先說「現在沒有」。
@@ -98,7 +98,7 @@ Step 2. Type `$dawnshard-reader`.
    - 語氣可選。想要的話存進 `settings.persona`，只在收尾多一句。
 3. 儀表板檔案這一步會產生。打開它是步驟 4。
 
-1. Type `$dawnshard-reader` (saying Dawnshard Reader also enters). The agent replies in one line that reading mode is on and that you leave with 「結束Dawnshard Reader」 / "exit reading mode". The rest of this conversation stays in reading mode. A new conversation needs `$dawnshard-reader` again.
+1. Type `$dawnshard-reader` (saying Dawnshard Reader also enters). The agent replies in one line that reading mode is on and that you leave with 「結束 Dawnshard Reader」 / "exit reading mode". The rest of this conversation stays in reading mode. A new conversation needs `$dawnshard-reader` again.
 2. With no `settings.json` yet, the agent asks one thing at a time:
    - Slice length: about 1 minute by default, or 30 seconds, 3 minutes, or custom.
    - Sources: details are in Step 3. "None for now" is fine.

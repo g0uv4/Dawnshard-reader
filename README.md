@@ -49,7 +49,7 @@ Verified with codex-cli 0.151.0 (no login needed): `codex debug prompt-input` li
 
 ## 一次觸發，整段對話有效 / Trigger once per conversation
 
-輸入 `$dawnshard-reader`（Codex CLI 也可用 `/skills` 選取；說「Dawnshard Reader」也會隱式觸發）就進入Dawnshard Reader 閱讀模式。之後同一對話裡貼文章、回答 A/B/C、說「再看一次」、問儀表板，都不必再輸入技能名，直到你說「結束Dawnshard Reader」。新對話要再觸發一次。
+輸入 `$dawnshard-reader`（Codex CLI 也可用 `/skills` 選取；說「Dawnshard Reader」也會隱式觸發）就進入Dawnshard Reader 閱讀模式。之後同一對話裡貼文章、回答 A/B/C、說「再看一次」、問儀表板，都不必再輸入技能名，直到你說「結束 Dawnshard Reader」。新對話要再觸發一次。
 Codex 機制：技能清單（名稱＋描述）每輪都在脈絡中；選用某技能時才讀入完整 SKILL.md，讀入後留在對話歷史裡。另外每個子技能的 description 都寫了「Dawnshard Reader 閱讀模式中的後續訊息」，搭配 AGENTS.md 的持續規則，脈絡被壓縮後也能接續。若想更穩，把本 repo 的 `AGENTS.md` 放到專案根目錄（Codex 每輪都會讀）。
 Type `$dawnshard-reader` once; reading mode then stays on for the whole conversation until you say "exit reading mode". The skill list (names + descriptions) is in context every turn and a loaded SKILL.md stays in the conversation history; follow-up-friendly descriptions plus the AGENTS.md rule cover context compaction. Start a new conversation → trigger again.
 
