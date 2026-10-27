@@ -55,14 +55,141 @@ Type `$dawnshard-reader` once; reading mode then stays on for the whole conversa
 
 ## 逐步指南 / Step-by-step guide
 
-完整步驟、每步的下一步與成功的樣子，見 [docs/GUIDE.md](docs/GUIDE.md)。
-Full steps, including what is next and what success looks like, are in [docs/GUIDE.md](docs/GUIDE.md).
+一次一個選單，步驟 1/6 到 6/6。任何回覆（含 0）進入下一步。編號選單以「請回覆數字。」結尾。網址、路徑、帳號那一行是「……，或回覆 0 略過。」，不要寫「請回覆數字。」。完整說明見 [docs/GUIDE.md](docs/GUIDE.md)。
 
-0. 確認已登入的 Codex、git、python3 / Check a signed-in Codex, git, and python3.
-1. 安裝到 `~/.agents/skills` 並重開 Codex / Install into `~/.agents/skills` and restart Codex.
-2. `$dawnshard-reader`，做完第一次設定 / `$dawnshard-reader`, finish first-run setup.
-3. 選一個來源做唯讀測試，或先略過 / Connect one source with a read-only test, or skip.
-4. 第一篇文章的第一片，然後開儀表板 / First article's first slice, then the dashboard.
+One menu at a time, steps 1/6 through 6/6. Any reply, including 0, moves on. Numbered menus end with 「請回覆數字。」. A URL, path, or account line ends with 「……，或回覆 0 略過。」 and does not say 「請回覆數字。」. Full notes: [docs/GUIDE.md](docs/GUIDE.md).
+
+### 中文
+
+步驟 1/6：安裝位置
+1. 全域安裝 ~/.agents/skills（建議）
+2. 只裝在這個專案 .agents/skills
+3. 已經裝好了
+0. 略過，之後再說
+請回覆數字。
+下一步：步驟 2/6。
+成功：8 個技能已列出，或已略過。
+
+步驟 2/6：每片長度
+1. 3 分鐘
+2. 5 分鐘（建議）
+3. 10 分鐘
+0. 略過，之後再說
+請回覆數字。
+下一步：步驟 3/6。
+成功：`slice_seconds` 已寫入或已略過。
+
+步驟 3/6：推送時間（08:00 / 12:30 / 20:30，勿擾 21:00–06:00）
+1. 用預設
+2. 只要早上 08:00
+3. 不要推送
+0. 略過，之後再說
+請回覆數字。
+下一步：步驟 4/6。
+成功：推送設定已存，或已略過。
+
+步驟 4/6：來源
+1. RSS
+2. 本機資料夾
+3. 電子報
+4. 電子郵件
+0. 略過，之後再說
+請回覆數字。
+要網址、路徑或帳號時改問一行：「請貼上 RSS 網址，或回覆 0 略過。」／「請貼上資料夾路徑，或回覆 0 略過。」／「請貼上帳號，或回覆 0 略過。」／「請貼上網址，或回覆 0 略過。」
+連線失敗：
+1. 重試
+2. 換一個來源
+3. 改用資料夾
+0. 略過，之後再說
+請回覆數字。
+下一步：另一個來源，或步驟 5/6。
+成功：唯讀測試列出最多 3 則，或已略過。
+
+步驟 5/6：第一篇文章
+1. 貼上網址
+2. 從已連線來源挑一篇
+3. 用範例文章
+0. 略過，之後再說
+請回覆數字。
+選 1 的下一則：「請貼上網址，或回覆 0 略過。」
+下一步：步驟 6/6。
+成功：第 1 片和一題在畫面上。
+
+步驟 6/6：第一片
+1. （選項）
+2. （選項）
+3. （選項）
+4. 再看一次
+0. 略過，之後再說
+請回覆數字。
+下一步：說「下一片」，或補上略過的步驟。
+成功：第 1 片已作答；儀表板有這篇、積分、連續第 1 天。
+
+### English
+
+Step 1/6: Install location
+1. User-wide ~/.agents/skills (recommended)
+2. This project only, .agents/skills
+3. Already installed
+0. 略過，之後再說
+請回覆數字。
+Next: step 2/6.
+Success: the 8 skills are listed, or this step was skipped.
+
+Step 2/6: Slice length
+1. 3 minutes
+2. 5 minutes (recommended)
+3. 10 minutes
+0. 略過，之後再說
+請回覆數字。
+Next: step 3/6.
+Success: `slice_seconds` is saved, or this step was skipped.
+
+Step 3/6: Push times (08:00 / 12:30 / 20:30, quiet hours 21:00–06:00)
+1. Use the defaults
+2. Morning 08:00 only
+3. No pushes
+0. 略過，之後再說
+請回覆數字。
+Next: step 4/6.
+Success: push settings are saved, or this step was skipped.
+
+Step 4/6: Source
+1. RSS
+2. Local folder
+3. Newsletter
+4. Email
+0. 略過，之後再說
+請回覆數字。
+When a URL, path, or account is required, one line: 「請貼上 RSS 網址，或回覆 0 略過。」 / 「請貼上資料夾路徑，或回覆 0 略過。」 / 「請貼上帳號，或回覆 0 略過。」 / 「請貼上網址，或回覆 0 略過。」
+Connection failed:
+1. Retry
+2. Switch source
+3. Use a folder
+0. 略過，之後再說
+請回覆數字。
+Next: another source, or step 5/6.
+Success: the read-only test listed up to 3 items, or this step was skipped.
+
+Step 5/6: First article
+1. Paste a URL
+2. Pick one from a connected source
+3. Use the sample article
+0. 略過，之後再說
+請回覆數字。
+After 1: 「請貼上網址，或回覆 0 略過。」
+Next: step 6/6.
+Success: slice 1 is on screen with one question.
+
+Step 6/6: First slice
+1. (choice)
+2. (choice)
+3. (choice)
+4. Read again
+0. 略過，之後再說
+請回覆數字。
+Next: say 「下一片」, or fill in a skipped step.
+Success: slice 1 is answered; the dashboard shows the article, the points, and streak day 1.
 
 ## 快速開始 / Quick start
 
