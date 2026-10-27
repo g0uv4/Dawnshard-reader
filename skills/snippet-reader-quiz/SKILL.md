@@ -1,6 +1,6 @@
 ---
 name: snippet-reader-quiz
-description: Proof-of-reading quiz for Snippet Reader. Use right after sending a slice: ask one question, praise a correct answer, re-paste the paragraph with escalating hints on a wrong answer, handle "show it again" re-read requests, and unlock the next slice.
+description: Proof-of-reading quiz for Snippet Reader. Use right after sending a slice: ask one question, praise a correct answer, re-paste the paragraph with escalating hints on a wrong answer, handle "show it again" re-read requests, and unlock the next slice. Also use for any A/B/C or short answer while Dawnshard reading mode is on.
 ---
 # Proof-of-reading quiz
 

@@ -41,11 +41,17 @@ echo ".snippet-reader/" >> .gitignore        # keep reading data out of git
 重新啟動 Codex；用 `$snippet-reader-slicing` 指名呼叫、輸入 `/skills` 挑選，或直接貼文章連結讓代理自動挑技能。
 Restart Codex; invoke explicitly (`$snippet-reader-slicing`), pick via `/skills`, or just paste a link.
 
-Verified with codex-cli 0.151.0 (no login needed): `codex debug prompt-input` lists all seven skills from `.agents/skills`, `~/.agents/skills` and `~/.codex/skills`.
+Verified with codex-cli 0.151.0 (no login needed): `codex debug prompt-input` lists all eight skills from `.agents/skills`, `~/.agents/skills` and `~/.codex/skills`.
+
+## 一次觸發，整段對話有效 / Trigger once per conversation
+
+輸入 `$dawnshard-reader`（Codex CLI 也可用 `/skills` 選取；說「Dawnshard Reader」也會隱式觸發）就進入Dawnshard Reader 閱讀模式。之後同一對話裡貼文章、回答 A/B/C、說「再看一次」、問儀表板，都不必再輸入技能名，直到你說「結束 Dawnshard Reader」。新對話要再觸發一次。
+Codex 機制：技能清單（名稱＋描述）每輪都在脈絡中；選用某技能時才讀入完整 SKILL.md，讀入後留在對話歷史裡。另外每個子技能的 description 都寫了「Dawnshard Reader 閱讀模式中的後續訊息」，搭配 AGENTS.md 的持續規則，脈絡被壓縮後也能接續。若想更穩，把本 repo 的 `AGENTS.md` 放到專案根目錄（Codex 每輪都會讀）。
+Type `$dawnshard-reader` once; reading mode then stays on for the whole conversation until you say "exit reading mode". The skill list (names + descriptions) is in context every turn and a loaded SKILL.md stays in the conversation history; follow-up-friendly descriptions plus the AGENTS.md rule cover context compaction. Start a new conversation → trigger again.
 
 ## 快速開始 / Quick start
 
-1. 「幫我設定Dawnshard Reader」/ "Set up Snippet Reader" → runs getting-started.
+1. `$dawnshard-reader`（或「幫我設定Dawnshard Reader」）→ 進入Dawnshard Reader 閱讀模式，首次會跑設定 / enters reading mode, runs setup the first time.
 2. 貼一篇文章連結 / paste an article link → sliced and stored in `.snippet-reader/state.json`.
 3. 回答每片的題目 / answer each slice's question.
 4. 開儀表板 / open the dashboard:
