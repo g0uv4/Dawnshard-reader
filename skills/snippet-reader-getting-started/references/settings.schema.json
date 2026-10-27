@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Snippet Reader settings",
+  "type": "object",
+  "required": [
+    "locale",
+    "timezone",
+    "slice_seconds"
+  ],
+  "properties": {
+    "locale": {
+      "type": "string",
+      "examples": [
+        "zh-TW",
+        "en-US"
+      ]
+    },
+    "timezone": {
+      "type": "string",
+      "examples": [
+        "Asia/Taipei"
+      ]
+    },
+    "slice_seconds": {
+      "type": "integer",
+      "minimum": 10,
+      "default": 60
+    },
+    "length_picks": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "description": "slice length in seconds -> times picked"
+    },
+    "push_times": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[0-2][0-9]:[0-5][0-9]$"
+      }
+    },
+    "quiet_hours": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "examples": [
+        [
+          "21:00-06:00"
+        ]
+      ]
+    },
+    "import_sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "enum": [
+              "rss",
+              "folder",
+              "mailbox",
+              "other"
+            ]
+          },
+          "location": {
+            "type": "string"
+          },
+          "filter": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "notify_command": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Optional shell command that receives the invite text on stdin. Never put secrets here; read them from the environment."
+    },
+    "weekly_recap": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Optional weekly recap run, e.g. 'SUN 20:00'. The recap is written to the dashboard; null = dashboard only, no extra run.",
+      "examples": [
+        "SUN 20:00",
+        null
+      ]
+    },
+    "persona": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Optional tone note, e.g. 'gentle bedtime storyteller; close the last evening slice with a soft sign-off'. Never changes the reading-only rules."
+    },
+    "data_dir": {
+      "type": "string",
+      "description": "Absolute path of the data folder. Needed when scheduled runs execute in a different checkout or worktree.",
+      "default": ".snippet-reader"
+    },
+    "dashboard_style": {
+      "enum": [
+        "lieflat-charts",
+        "builtin"
+      ],
+      "description": "Visual style chosen when the dashboard HTML was first generated; reuse it on regeneration."
+    }
+  }
+}

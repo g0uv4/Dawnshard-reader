@@ -1,0 +1,29 @@
+{
+  "locale": "zh-TW",
+  "timezone": "Asia/Taipei",
+  "slice_seconds": 60,
+  "length_picks": {
+    "60": 3,
+    "180": 1
+  },
+  "push_times": [
+    "08:00",
+    "12:30",
+    "20:30"
+  ],
+  "quiet_hours": [
+    "21:00-06:00"
+  ],
+  "import_sources": [
+    {
+      "type": "rss",
+      "location": "https://example.com/feed.xml",
+      "filter": ""
+    }
+  ],
+  "notify_command": null,
+  "weekly_recap": "SUN 20:00",
+  "persona": null,
+  "data_dir": "/path/to/reading-workspace/.snippet-reader",
+  "dashboard_style": "builtin"
+}

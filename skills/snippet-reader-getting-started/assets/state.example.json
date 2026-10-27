@@ -1,0 +1,165 @@
+{
+  "version": 1,
+  "generated_at": "2026-10-27T09:00:00+08:00",
+  "points": 185,
+  "points_log": [
+    {
+      "at": "2026-10-20T08:00:00+08:00",
+      "reason": "earlier awards (summarised)",
+      "delta": 170
+    },
+    {
+      "at": "2026-10-27T08:05:00+08:00",
+      "reason": "warm-up",
+      "delta": 5
+    },
+    {
+      "at": "2026-10-27T08:05:00+08:00",
+      "reason": "slice ex-1#1 correct",
+      "delta": 10
+    }
+  ],
+  "streak": {
+    "days": 4,
+    "best": 9,
+    "last_day": "2026-10-27",
+    "freeze_used_week": null
+  },
+  "badges": [
+    {
+      "id": "first-article",
+      "earned_at": "2026-10-20T21:10:00+08:00",
+      "progress": 1
+    },
+    {
+      "id": "streak-7",
+      "earned_at": null,
+      "progress": 0.57
+    },
+    {
+      "id": "streak-30",
+      "earned_at": null,
+      "progress": 0.13
+    },
+    {
+      "id": "perfect-10",
+      "earned_at": null,
+      "progress": 0.4
+    },
+    {
+      "id": "beat-expiry-5",
+      "earned_at": null,
+      "progress": 0.2
+    },
+    {
+      "id": "first-share",
+      "earned_at": null,
+      "progress": 0
+    }
+  ],
+  "weekly": {
+    "week": "2026-W44",
+    "quest": [
+      {
+        "label": "Finish 2 articles",
+        "goal": 2,
+        "done": 1
+      },
+      {
+        "label": "5 first-try answers",
+        "goal": 5,
+        "done": 3
+      }
+    ],
+    "recap": {
+      "slices": 9,
+      "articles": 1,
+      "points": 140,
+      "best_moment": "Perfect run on a 5-slice article"
+    },
+    "surprise_slice": null
+  },
+  "daily": {
+    "2026-10-21": 3,
+    "2026-10-22": 0,
+    "2026-10-23": 2,
+    "2026-10-24": 4,
+    "2026-10-25": 1,
+    "2026-10-26": 2,
+    "2026-10-27": 1
+  },
+  "articles": [
+    {
+      "id": "ex-1",
+      "title": "Example: How batteries age",
+      "url": "https://example.com/batteries",
+      "kind": "article",
+      "slices_total": 5,
+      "current_slice": 2,
+      "added_at": "2026-10-26T20:00:00+08:00",
+      "opened": true,
+      "is_new": false,
+      "status": "in_progress",
+      "slices": [
+        {
+          "n": 1,
+          "first_try_correct": true,
+          "attempts": 1,
+          "rereads": 0,
+          "answered_at": "2026-10-27T08:05:00+08:00"
+        },
+        {
+          "n": 2,
+          "first_try_correct": false,
+          "attempts": 2,
+          "rereads": 1,
+          "answered_at": "2026-10-27T08:09:00+08:00"
+        }
+      ]
+    },
+    {
+      "id": "ex-2",
+      "title": "Example: A talk on city planning",
+      "url": "https://www.youtube.com/watch?v=EXAMPLE",
+      "kind": "video",
+      "duration_seconds": 2700,
+      "slices_total": 8,
+      "current_slice": 0,
+      "added_at": "2026-10-27T07:30:00+08:00",
+      "opened": false,
+      "is_new": true,
+      "status": "unread",
+      "slices": []
+    },
+    {
+      "id": "ex-3",
+      "title": "Example: Notes on sleep",
+      "url": "https://example.com/sleep",
+      "kind": "article",
+      "slices_total": 4,
+      "current_slice": 4,
+      "added_at": "2026-10-24T12:00:00+08:00",
+      "opened": true,
+      "status": "done",
+      "finished_at": "2026-10-25T21:00:00+08:00",
+      "takeaway": "Consistent wake times matter more than bedtime.",
+      "slices": []
+    }
+  ],
+  "queue": [],
+  "share_drafts": [
+    {
+      "article_id": "ex-3",
+      "text": "Consistent wake times matter more than bedtime.",
+      "intent_url": "https://x.com/intent/post?text=Consistent%20wake%20times%20matter%20more%20than%20bedtime."
+    }
+  ],
+  "locale": "zh-TW",
+  "timezone": "Asia/Taipei",
+  "stats": {
+    "questions": 2,
+    "first_try_correct": 1,
+    "perfect_run": 0,
+    "finished_before_expiry": 1
+  }
+}
