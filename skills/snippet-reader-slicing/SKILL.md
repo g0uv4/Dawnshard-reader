@@ -1,6 +1,6 @@
 ---
 name: snippet-reader-slicing
-description: Add an article to the Snippet Reader list and cut it into timed reading slices. Use when the user shares a link, X post or thread, pasted text, or a newsletter is imported. For long videos or podcasts use snippet-reader-video-slicing instead.
+description: Add an article to the Snippet Reader list and cut it into timed reading slices. Use when the user shares a link, X post or thread, pasted text, or a newsletter is imported. For long videos or podcasts use snippet-reader-video-slicing instead. Also use for any link or pasted text while Dawnshard reading mode is on.
 ---
 # Adding and slicing an article
 

@@ -1,6 +1,6 @@
 ---
 name: snippet-reader-dashboard
-description: Build and refresh the Snippet Reader dashboard as a local static HTML file that reads state.json. Use after every answered quiz, added/expired/finished/shelved article, scheduled run, or when the user asks for progress, points, streak, badges or the reading list.
+description: Build and refresh the Snippet Reader dashboard as a local static HTML file that reads state.json. Use after every answered quiz, added/expired/finished/shelved article, scheduled run, or when the user asks for progress, points, streak, badges or the reading list. Also use for progress questions while Dawnshard reading mode is on.
 ---
 # Reading dashboard (local HTML)
 
