@@ -1,5 +1,9 @@
 # Dawnshard Reader（Dawnshard Reader技能包 / Snippet Reader skills）
 
+> **Hard rule / 硬規則 — options first / 選項優先**
+> Every point that needs a user decision offers numbered options (1/2/3 menu or buttons). Free typing only where unavoidable (URL, account, folder path), and every such prompt also offers `0. 略過，之後再說 / skip, do it later`. Never ask open-ended questions.
+> 每個需要使用者決定的地方都給編號選項；只有網址、帳號、路徑等無法避免時才請使用者打字，且一定附「0. 略過，之後再說」。不問開放式問題。
+
 把長文、電子報、X 串文、長影片／Podcast 切成約一分鐘的「切片」，每片一題閱讀測驗，搭配積分、等級、連續天數、徽章等遊戲化機制，並用一個本機 HTML 儀表板呈現進度。適用 OpenAI Codex（Agent Skills 格式），也適用任何讀得懂 `SKILL.md` 的代理。
 
 Turn long reads (articles, newsletters, X threads, long videos/podcasts) into ~1‑minute **slices**, quiz every slice, gamify progress (points, quota levels, streaks, badges, weekly quests) and show everything on a **local static HTML dashboard**. Written for OpenAI Codex Agent Skills; works with any agent that reads `SKILL.md`.
@@ -45,11 +49,25 @@ Verified with codex-cli 0.151.0 (no login needed): `codex debug prompt-input` li
 
 ## 一次觸發，整段對話有效 / Trigger once per conversation
 
-輸入 `$dawnshard-reader`（Codex CLI 也可用 `/skills` 選取；說「Dawnshard Reader」也會隱式觸發）就進入Dawnshard Reader 閱讀模式。之後同一對話裡貼文章、回答 A/B/C、說「再看一次」、問儀表板，都不必再輸入技能名，直到你說「結束 Dawnshard Reader」。新對話要再觸發一次。
+輸入 `$dawnshard-reader`（Codex CLI 也可用 `/skills` 選取；說「Dawnshard Reader」也會隱式觸發）就進入Dawnshard Reader 閱讀模式。之後同一對話裡貼文章、回答 A/B/C、說「再看一次」、問儀表板，都不必再輸入技能名，直到你說「結束Dawnshard Reader」。新對話要再觸發一次。
 Codex 機制：技能清單（名稱＋描述）每輪都在脈絡中；選用某技能時才讀入完整 SKILL.md，讀入後留在對話歷史裡。另外每個子技能的 description 都寫了「Dawnshard Reader 閱讀模式中的後續訊息」，搭配 AGENTS.md 的持續規則，脈絡被壓縮後也能接續。若想更穩，把本 repo 的 `AGENTS.md` 放到專案根目錄（Codex 每輪都會讀）。
 Type `$dawnshard-reader` once; reading mode then stays on for the whole conversation until you say "exit reading mode". The skill list (names + descriptions) is in context every turn and a loaded SKILL.md stays in the conversation history; follow-up-friendly descriptions plus the AGENTS.md rule cover context compaction. Start a new conversation → trigger again.
 
+## 逐步指南 / Step-by-step guide
+
+完整步驟、每步的下一步與成功的樣子，見 [docs/GUIDE.md](docs/GUIDE.md)。
+Full steps, including what is next and what success looks like, are in [docs/GUIDE.md](docs/GUIDE.md).
+
+0. 確認已登入的 Codex、git、python3 / Check a signed-in Codex, git, and python3.
+1. 安裝到 `~/.agents/skills` 並重開 Codex / Install into `~/.agents/skills` and restart Codex.
+2. `$dawnshard-reader`，做完第一次設定 / `$dawnshard-reader`, finish first-run setup.
+3. 選一個來源做唯讀測試，或先略過 / Connect one source with a read-only test, or skip.
+4. 第一篇文章的第一片，然後開儀表板 / First article's first slice, then the dashboard.
+
 ## 快速開始 / Quick start
+
+最短路徑如下；逐步說明與失敗時怎麼辦見 [docs/GUIDE.md](docs/GUIDE.md)。
+Shortest path below. The full steps and what to do when something fails are in [docs/GUIDE.md](docs/GUIDE.md).
 
 1. `$dawnshard-reader`（或「幫我設定Dawnshard Reader」）→ 進入Dawnshard Reader 閱讀模式，首次會跑設定 / enters reading mode, runs setup the first time.
 2. 貼一篇文章連結 / paste an article link → sliced and stored in `.snippet-reader/state.json`.

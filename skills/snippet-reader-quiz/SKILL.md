@@ -2,6 +2,10 @@
 name: snippet-reader-quiz
 description: Proof-of-reading quiz for Snippet Reader. Use right after sending a slice: ask one question, praise a correct answer, re-paste the paragraph with escalating hints on a wrong answer, handle "show it again" re-read requests, and unlock the next slice. Also use for any A/B/C or short answer while Dawnshard reading mode is on.
 ---
+> **Hard rule / 硬規則 — options first / 選項優先**
+> Every point that needs a user decision offers numbered options (1/2/3 menu or buttons). Free typing only where unavoidable (URL, account, folder path), and every such prompt also offers `0. 略過，之後再說 / skip, do it later`. Never ask open-ended questions.
+> 每個需要使用者決定的地方都給編號選項；只有網址、帳號、路徑等無法避免時才請使用者打字，且一定附「0. 略過，之後再說」。不問開放式問題。
+
 # Proof-of-reading quiz
 
 1. After each slice ask ONE question about that slice only: 3 options (A/B/C), shown as tappable choices if the client supports them, or a one-line answer. Shuffle options so the correct letter varies (not always A). Rotate types: main idea, specific fact, "what would the author say about…", apply-it-to-your-life.
