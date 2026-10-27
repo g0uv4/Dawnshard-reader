@@ -1,0 +1,361 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Snippet Reader state",
+  "type": "object",
+  "required": [
+    "version",
+    "points",
+    "articles"
+  ],
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "points": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "points_log": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "at",
+          "reason",
+          "delta"
+        ],
+        "properties": {
+          "at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "delta": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "streak": {
+      "type": "object",
+      "properties": {
+        "days": {
+          "type": "integer"
+        },
+        "best": {
+          "type": "integer"
+        },
+        "last_day": {
+          "type": "string",
+          "format": "date"
+        },
+        "freeze_used_week": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "ISO week like 2026-W44"
+        }
+      }
+    },
+    "badges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "enum": [
+              "first-article",
+              "streak-7",
+              "streak-30",
+              "perfect-10",
+              "beat-expiry-5",
+              "first-share"
+            ]
+          },
+          "earned_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "progress": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        }
+      }
+    },
+    "weekly": {
+      "type": "object",
+      "properties": {
+        "week": {
+          "type": "string"
+        },
+        "quest": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "goal": {
+                "type": "integer"
+              },
+              "done": {
+                "type": "integer"
+              }
+            }
+          }
+        },
+        "recap": {
+          "type": "object",
+          "properties": {
+            "slices": {
+              "type": "integer"
+            },
+            "articles": {
+              "type": "integer"
+            },
+            "points": {
+              "type": "integer"
+            },
+            "best_moment": {
+              "type": "string"
+            }
+          }
+        },
+        "surprise_slice": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "daily": {
+      "type": "object",
+      "description": "YYYY-MM-DD -> slices answered that day",
+      "additionalProperties": {
+        "type": "integer"
+      }
+    },
+    "articles": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/article"
+      }
+    },
+    "queue": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/article"
+      }
+    },
+    "share_drafts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "article_id": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          },
+          "intent_url": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      }
+    },
+    "locale": {
+      "type": "string",
+      "description": "Copied from settings.json so the dashboard can localize without reading settings",
+      "examples": [
+        "zh-TW",
+        "en-US"
+      ]
+    },
+    "timezone": {
+      "type": "string",
+      "examples": [
+        "Asia/Taipei"
+      ]
+    },
+    "stats": {
+      "type": "object",
+      "properties": {
+        "questions": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "first_try_correct": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "perfect_run": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "current run of first-try-correct slices (perfect-10 badge)"
+        },
+        "finished_before_expiry": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    }
+  },
+  "$defs": {
+    "article": {
+      "type": "object",
+      "required": [
+        "id",
+        "title",
+        "kind",
+        "slices_total",
+        "current_slice",
+        "added_at",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "kind": {
+          "enum": [
+            "article",
+            "thread",
+            "newsletter",
+            "video",
+            "podcast",
+            "text",
+            "report"
+          ]
+        },
+        "duration_seconds": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "content_hash": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "slices_total": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "current_slice": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "added_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "opened": {
+          "type": "boolean"
+        },
+        "is_new": {
+          "type": "boolean"
+        },
+        "status": {
+          "enum": [
+            "unread",
+            "in_progress",
+            "done",
+            "expired",
+            "queued",
+            "shelved"
+          ]
+        },
+        "finished_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "takeaway": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "slices": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "n": {
+                "type": "integer"
+              },
+              "start_seconds": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "first_try_correct": {
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              },
+              "attempts": {
+                "type": "integer"
+              },
+              "rereads": {
+                "type": "integer"
+              },
+              "answered_at": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time"
+              }
+            }
+          }
+        },
+        "summary_only": {
+          "type": "boolean",
+          "description": "true when only a summary/preview was available (e.g. paid newsletter without full text)"
+        },
+        "source": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "publication or author shown in the slice header"
+        }
+      }
+    }
+  }
+}
