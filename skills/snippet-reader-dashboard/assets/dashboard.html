@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Snippet Reader · Dawnshard Reader儀表板</title>
+<style>
+:root{--bg:#fafafa;--card:#fff;--fg:#1f2328;--muted:#6b7280;--line:#e5e7eb;--accent:#2563eb;--warn:#d97706;--danger:#dc2626;--ok:#16a34a}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1115;--card:#171a21;--fg:#e6e6e6;--muted:#9aa0a6;--line:#2a2f3a}}
+*{box-sizing:border-box}body{margin:0;font:15px/1.5 system-ui,-apple-system,"Segoe UI","Noto Sans TC",sans-serif;background:var(--bg);color:var(--fg)}
+main{max-width:1100px;margin:0 auto;padding:16px}h1{font-size:20px;margin:0 0 4px}h2{font-size:16px;margin:0 0 8px}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:12px}
+.muted{color:var(--muted)}.big{font-size:28px;font-weight:700}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.bar{height:8px;background:var(--line);border-radius:4px;overflow:hidden}.bar>i{display:block;height:100%;background:var(--accent)}
+.warn>i{background:var(--warn)}.danger>i{background:var(--danger)}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--line);display:inline-block}.dot.on{background:var(--accent)}
+.tag{font-size:12px;padding:1px 6px;border-radius:6px;border:1px solid var(--line)}.tag.new{border-color:var(--accent);color:var(--accent)}
+button,select{font:inherit;padding:4px 10px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--fg);cursor:pointer}
+button.active{border-color:var(--accent);color:var(--accent)}
+table{width:100%;border-collapse:collapse}td,th{text-align:left;padding:6px 4px;border-bottom:1px solid var(--line);font-size:14px}
+.badge{padding:8px;border:1px solid var(--line);border-radius:8px;text-align:center;font-size:13px}.badge.locked{opacity:.45}
+.heat{display:grid;max-width:420px;grid-template-columns:repeat(7,1fr);gap:4px}.heat div{aspect-ratio:1;border-radius:4px;background:var(--line);font-size:11px;display:flex;align-items:center;justify-content:center}
+#loader{display:none}
+</style>
+</head>
+<body><main>
+<header class="row" style="justify-content:space-between"><div><h1 data-i="title">Dawnshard Reader閱讀儀表板</h1><div id="state" class="muted"></div></div>
+<label id="loader" class="row"><span class="muted" data-i="pick">選擇 state.json</span><input type="file" id="file" accept=".json,application/json"></label></header>
+<div id="app"></div>
+</main>
+<script>
+/* Snippet Reader dashboard (MIT). Reads ./state.json; falls back to a file picker when opened via file://. */
+const I18N={"zh":{title:"Dawnshard Reader閱讀儀表板",pick:"選擇 state.json",empty:"清單是空的：貼一篇文章連結給代理，就會開始切片。",quests:"即將消失",gone:"已消失",today:"今天",slicesToday:"今日切片",streak:"連續天數",days:"天",freeze:"本週凍結",used:"已用",avail:"可用",points:"積分",level:"等級",quota:"額度",toNext:"距下一級",counts:"數量",unread:"未讀",inprog:"進行中",done:"完成",queued:"排隊",expired:"已消失",shelved:"擱置",comp:"理解度（首答正確）",all:"全部",articles:"文章",sort:"排序",soon:"快到期",newest:"最新",shortest:"最短",badges:"徽章牆",quest:"本週任務",recap:"本週回顧",share:"分享草稿",heat:"近 7 天閱讀",post:"在 X 發文",read:"讀第 {n} 片",left:"剩 {h} 小時",max:"已滿級",sum:"{u} 篇未讀，{e} 篇 12 小時內消失，距下一級 {p} 分",reread:"重讀",first:"首答",best:"最佳時刻",new:"新"},
+"en":{title:"Reading dashboard",pick:"Choose state.json",empty:"The list is empty: send the agent an article link to start slicing.",quests:"Vanishing soon",gone:"Gone",today:"Today",slicesToday:"Slices today",streak:"Streak",days:"days",freeze:"Weekly freeze",used:"used",avail:"available",points:"Points",level:"Level",quota:"Quota",toNext:"To next level",counts:"Counts",unread:"Unread",inprog:"In progress",done:"Done",queued:"Queued",expired:"Gone",shelved:"Shelved",comp:"Comprehension (first try)",all:"All",articles:"Articles",sort:"Sort",soon:"Expiring soon",newest:"Newest",shortest:"Shortest",badges:"Badges",quest:"Weekly quest",recap:"Weekly recap",share:"Share drafts",heat:"Last 7 days",post:"Post on X",read:"Read slice {n}",left:"{h}h left",max:"Max level",sum:"{u} unread, {e} expire within 12h, {p} pts to next level",reread:"re-reads",first:"first try",best:"Best moment",new:"new"}};
+const BADGES={"first-article":"📖 First article","streak-7":"🔥 7-day streak","streak-30":"🔥 30-day streak","perfect-10":"🎯 10 perfect","beat-expiry-5":"⏱ 5 before expiry","first-share":"📣 First share"};
+const LEVELS=[[0,5],[100,7],[250,10],[500,15],[1000,20],[2000,30]];
+let S=null,T=I18N.zh,filter="all",sort="soon";
+const $=s=>document.querySelector(s),esc=s=>String(s??"—").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])),f=(t,o)=>t.replace(/\{(\w+)\}/g,(_,k)=>o[k]);
+const hoursLeft=a=>a.opened?null:(new Date(a.added_at).getTime()+48*3600e3-Date.now())/3600e3;
+function level(p){let l=0;LEVELS.forEach(([min],i)=>{if(p>=min)l=i});return{l,quota:LEVELS[l][1],next:LEVELS[l+1]?LEVELS[l+1][0]-p:null}}
+function render(){
+  const lang=(S.locale||navigator.language||"zh").slice(0,2);T=I18N[lang]||I18N.en;
+  document.querySelectorAll("[data-i]").forEach(e=>e.textContent=T[e.dataset.i]);
+  const A=S.articles||[],Q=S.queue||[],pts=S.points??0,L=level(pts);
+  const by=st=>A.filter(a=>a.status===st);
+  const active=by("unread").length+by("in_progress").length;
+  const vanishing=A.filter(a=>!a.opened&&a.status==="unread").map(a=>[a,hoursLeft(a)]).sort((x,y)=>x[1]-y[1]);
+  const soon=vanishing.filter(([,h])=>h<12).length;
+  $("#state").textContent=A.length||Q.length?f(T.sum,{u:by("unread").length,e:soon,p:L.next??"—"}):"";
+  if(!A.length&&!Q.length){$("#app").innerHTML=`<div class="card">${T.empty}</div>`;return}
+  const today=new Date().toLocaleDateString("sv-SE"),st=S.streak||{},wk=S.weekly||{};
+  let h="";
+  if(vanishing.length){h+=`<div class="card"><h2>${T.quests}</h2>`+vanishing.map(([a,hl])=>{const pct=Math.max(0,Math.min(100,hl/48*100)),cls=hl<3?"danger":hl<12?"warn":"";
+    return `<div style="margin:8px 0"><div class="row" style="justify-content:space-between"><span>${a.is_new?`<span class="tag new">${T.new}</span> `:""}${link(a)}</span><span class="muted">${f(T.left,{h:Math.max(0,hl).toFixed(1)})}</span></div><div class="bar ${cls}"><i style="width:${pct}%"></i></div></div>`}).join("")+`</div>`}
+  h+=`<div class="grid">
+   <div class="card"><h2>${T.today}</h2><div class="big">${(S.daily||{})[today]??0}</div><div class="muted">${T.slicesToday}</div></div>
+   <div class="card"><h2>🔥 ${T.streak}</h2><div class="big">${st.days??"—"} <small>${T.days}</small></div><div class="muted">${T.freeze}: ${st.freeze_used_week?T.used:T.avail}</div></div>
+   <div class="card"><h2>${T.points} · ${T.level} ${L.l}</h2><div class="big">${pts}</div><div class="bar"><i style="width:${L.next==null?100:Math.round((pts-LEVELS[L.l][0])/(LEVELS[L.l+1][0]-LEVELS[L.l][0])*100)}%"></i></div><div class="muted">${L.next==null?T.max:T.toNext+" "+L.next} · ${T.quota} ${active}/${L.quota}</div></div>
+   <div class="card"><h2>${T.counts}</h2><table><tr><td>${T.unread}</td><td>${by("unread").length}</td><td>${T.inprog}</td><td>${by("in_progress").length}</td></tr><tr><td>${T.done}</td><td>${by("done").length}</td><td>${T.queued}</td><td>${Q.length}</td></tr><tr><td>${T.shelved}</td><td>${by("shelved").length}</td><td>${T.expired}</td><td>${by("expired").length}</td></tr></table><div class="muted">${T.comp}: ${(()=>{const sl=A.flatMap(a=>a.slices||[]).filter(x=>x.first_try_correct!=null);const n=(S.stats&&S.stats.questions)||sl.length,c=(S.stats&&S.stats.first_try_correct)??sl.filter(x=>x.first_try_correct).length;return n?`${c}/${n} (${Math.round(c/n*100)}%)`:"—"})()}</div></div></div>`;
+  const list=filter==="queued"?Q:A.filter(a=>a.status!=="expired"&&(filter==="all"||a.status===filter));
+  const sorted=[...list].sort((a,b)=>sort==="newest"?b.added_at.localeCompare(a.added_at):sort==="shortest"?a.slices_total-b.slices_total:(hoursLeft(a)??1e9)-(hoursLeft(b)??1e9));
+  h+=`<div class="card"><div class="row" style="justify-content:space-between"><h2>${T.articles}</h2><div class="row">${[["all",T.all],["unread",T.unread],["in_progress",T.inprog],["done",T.done],["queued",T.queued]].map(([k,l])=>`<button class="${filter===k?"active":""}" onclick="filter='${k}';render()">${l}</button>`).join("")}
+   <select onchange="sort=this.value;render()">${[["soon",T.soon],["newest",T.newest],["shortest",T.shortest]].map(([k,l])=>`<option value="${k}" ${sort===k?"selected":""}>${l}</option>`).join("")}</select></div></div>`+
+   sorted.map(a=>{const sl=a.slices||[];return `<details style="padding:8px 0;border-bottom:1px solid var(--line)"><summary class="row" style="justify-content:space-between;cursor:pointer"><span>${a.is_new?`<span class="tag new">${T.new}</span> `:""}<span class="tag">${esc(a.kind)}</span> ${link(a)}</span><span class="row">${Array.from({length:a.slices_total},(_,i)=>`<span class="dot ${i<a.current_slice?"on":""}"></span>`).join("")}<span class="muted">${a.current_slice}/${a.slices_total}</span></span></summary>
+    ${a.status!=="done"&&a.status!=="queued"?`<div class="muted">${f(T.read,{n:a.current_slice+1})}</div>`:""}${a.takeaway?`<p>${esc(a.takeaway)}</p>`:""}
+    ${sl.length?`<table><tr><th>#</th><th>${T.first}</th><th>${T.reread}</th></tr>${sl.map(s=>`<tr><td>${s.n}</td><td>${s.first_try_correct==null?"—":s.first_try_correct?"✓":"✗"}</td><td>${s.rereads??0}</td></tr>`).join("")}</table>`:""}</details>`}).join("")+`</div>`;
+  const gone=by("expired");if(gone.length)h+=`<div class="card"><h2 class="muted">${T.gone}</h2>${gone.map(a=>`<div class="muted">${esc(a.title)}</div>`).join("")}</div>`;
+  h+=`<div class="grid"><div class="card"><h2>${T.badges}</h2><div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(100px,1fr))">${(S.badges||[]).map(b=>`<div class="badge ${b.earned_at?"":"locked"}">${esc(BADGES[b.id]||b.id)}${b.earned_at?"":`<div class="bar"><i style="width:${Math.round((b.progress||0)*100)}%"></i></div>`}</div>`).join("")}</div></div>
+   <div class="card"><h2>${T.quest}</h2>${(wk.quest||[]).map(q=>`<div>${esc(q.label)} <span class="muted">${q.done}/${q.goal}</span><div class="bar"><i style="width:${Math.min(100,q.done/q.goal*100)}%"></i></div></div>`).join("")||"—"}</div>
+   <div class="card"><h2>${T.recap}</h2>${wk.recap?`<table><tr><td>${T.slicesToday.replace(/今日|today/i,"")||"Slices"}</td><td>${wk.recap.slices}</td></tr><tr><td>${T.articles}</td><td>${wk.recap.articles}</td></tr><tr><td>${T.points}</td><td>${wk.recap.points}</td></tr></table><p class="muted">${T.best}: ${esc(wk.recap.best_moment)}</p>`:"—"}</div></div>`;
+  const days=[...Array(7)].map((_,i)=>{const d=new Date(Date.now()-(6-i)*864e5).toLocaleDateString("sv-SE");return[d,(S.daily||{})[d]]});
+  if(Object.keys(S.daily||{}).length){const mx=Math.max(1,...days.map(d=>d[1]||0));h+=`<div class="card"><h2>${T.heat}</h2><div class="heat">${days.map(([d,n])=>`<div title="${d}" style="${n?`background:color-mix(in srgb,var(--accent) ${20+80*n/mx}%,transparent);color:#fff`:""}">${n??"—"}</div>`).join("")}</div></div>`}
+  if((S.share_drafts||[]).length)h+=`<div class="card"><h2>${T.share}</h2>${S.share_drafts.map(d=>`<p>${esc(d.text)} <a href="${esc(d.intent_url)}" target="_blank" rel="noopener">${T.post}</a></p>`).join("")}</div>`;
+  $("#app").innerHTML=h;
+}
+function link(a){return a.url?`<a href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.title)}</a>`:esc(a.title)}
+function load(data){S=data;render()}
+fetch("state.json",{cache:"no-store"}).then(r=>{if(!r.ok)throw 0;return r.json()}).then(load).catch(()=>{$("#loader").style.display="flex";$("#app").innerHTML=`<div class="card muted">${T.pick}</div>`});
+$("#file").addEventListener("change",e=>{const r=new FileReader();r.onload=()=>load(JSON.parse(r.result));r.readAsText(e.target.files[0])});
+setInterval(()=>{if(location.protocol.startsWith("http"))fetch("state.json",{cache:"no-store"}).then(r=>r.json()).then(load).catch(()=>{})},60000);
+</script>
+</body></html>
